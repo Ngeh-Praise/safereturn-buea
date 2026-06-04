@@ -6,8 +6,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
-import ReportCase from "./pages/ReportCase";
-import SubmitTip from "./pages/SubmitTip";
+import ReportCase from "./pages/Reportcase";
+import SubmitTip from "./pages/Submittip";
 
 export default function App() {
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import MissingCaseCard from '../components/MissingCaseCard';
+import MissingCaseCard from '../components/Missingcasecard';
 
 const mockPortalCases = [
   { id: 3, name: "Ambe Divine", age: 32, gender: "Male", location: "Mile 17, Buea", date: "4h ago", imagePlaceholder: true },
