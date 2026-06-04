@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme {
+  /* Define your exact UI design color tokens here */
+  --color-primary: #7A0C2E;
+  --color-primary-hover: #5F0722;
+  --color-primary-active: #480317;
+  
+  --color-secondary: #F8F9FA;
+  --color-secondary-border: #EAEAEA;
+  --color-danger-alert: #E51C23;
+}
