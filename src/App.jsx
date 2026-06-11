@@ -5,11 +5,11 @@ import Sidebar from "./components/Sidebar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
 import ReportCase from "./pages/Reportcase";
 import SubmitTip from "./pages/Submittip";
 import About from "./pages/About";
 import SafetyTips from "./pages/SafetyTips";
+import ActiveCases from "./pages/ActiveCases"
 
 // Create a small helper component to handle the Navbar logic
 function Layout({ children }) {
@@ -46,7 +46,8 @@ export default function App() {
                   <Sidebar />
                   <main className="flex-1 bg-white p-8 overflow-y-auto">
                     <Routes>
-                      <Route path="/dashboard" element={<Dashboard />} />
+                      {/*<Route path="/dashboard" element={<Dashboard />} />*/}
+                      <Route path="/activecases" element={<ActiveCases />} />
                       <Route path="/report-case" element={<ReportCase />} />
                       <Route path="/submit-tip" element={<SubmitTip />} />
                     </Routes>

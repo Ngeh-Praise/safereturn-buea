@@ -1,6 +1,6 @@
 import React from 'react';
 import Footer from '../components/Footer';
-
+import { Link } from 'react-router-dom';
 const mockCases = [
   { 
     id: 1, 
@@ -41,10 +41,10 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <button className="flex items-center justify-center gap-2 bg-[#6b111e] hover:bg-[#5a0e19] text-white px-7 py-3.5 rounded font-bold transition-colors shadow-sm text-sm">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-              Report Missing Person
+              <Link to="/login">Report Missing Person</Link>
             </button>
             <button className="flex items-center justify-center bg-white border border-gray-200 hover:border-gray-300 text-gray-800 px-7 py-3.5 rounded font-bold transition-colors shadow-sm text-sm">
-              View Active Cases
+              <Link to="/activecases">View Active Cases</Link>
             </button>
           </div>
         </div>
