@@ -15,7 +15,7 @@ import ActiveCases from "./pages/ActiveCases"
 function Layout({ children }) {
   const location = useLocation();
   // Define which paths should NOT have the Navbar
-  const hideNavbar = location.pathname === "/login" || location.pathname === "/register";
+  const hideNavbar = location.pathname === "/register";
 
   return (
     <>
