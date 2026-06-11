@@ -8,6 +8,8 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ReportCase from "./pages/Reportcase";
 import SubmitTip from "./pages/Submittip";
+import About from "./pages/About";
+import SafetyTips from "./pages/SafetyTips";
 
 // Create a small helper component to handle the Navbar logic
 function Layout({ children }) {
@@ -33,6 +35,8 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/safety-tips" element={<SafetyTips />} />
 
             {/* Internal Dashboard Tracks (Protected Layout Shell) */}
             <Route 
