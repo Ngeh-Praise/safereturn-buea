@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { User, MapPin, Camera, Upload, AlertTriangle } from 'lucide-react';
 
-export default function Reportcase() {
+export default function ReportCase() {
   const [formData, setFormData] = useState({
     fullName: '',
     age: '',
@@ -194,7 +194,7 @@ export default function Reportcase() {
       </main>
 
       {/* Page Footer */}
-      <footer className="bg-[#F8FAFC] border-t border-slate-200/60 px-6 py-6 md:px-16 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 space-y-4 md:space-y-0">
+      {/* <footer className="bg-[#F8FAFC] border-t border-slate-200/60 px-6 py-6 md:px-16 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 space-y-4 md:space-y-0">
         <div className="text-center md:text-left">
           <span className="font-bold text-slate-700">SafeReturn Buea</span>
           <p className="mt-0.5">© 2026 SafeReturn Buea. Humanitarian Response Platform.</p>
@@ -205,7 +205,7 @@ export default function Reportcase() {
           <a href="#privacy" className="hover:underline">Privacy Policy</a>
           <a href="#terms" className="hover:underline">Terms of Service</a>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 }
