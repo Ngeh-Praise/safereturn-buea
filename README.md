@@ -32,6 +32,15 @@ The database is structured to ensure data integrity across users, reports, tips,
 * **COMMUNITY_MEMBER_TIP**: Manages incoming leads linked to specific cases.
 * **SMS_LOG**: Tracks automated emergency broadcasts.
 
+VTest Credentials
+For evaluation purposes, you can log in using the following administrative credentials:
+
+Admin Email: admin@safereturn.com
+
+Admin Password: Admin12345!
+
+Note: Please ensure the backend server is running and the database is populated before attempting to log in.
+
 ## Known Limitations and Future Work
 
 Due to the constraints of the final-year academic project timeline, the following areas remain in development or testing:
