@@ -1,0 +1,14 @@
+// This would be replaced by your actual API call (e.g., axios.post)
+exports.sendSMS = async (phoneNumber, message) => {
+    try {
+        console.log(`--- SMS ALERT SENT ---`);
+        console.log(`To: ${phoneNumber}`);
+        console.log(`Message: ${message}`);
+        console.log(`----------------------`);
+        // Logic for real SMS provider goes here
+        return true;
+    } catch (err) {
+        console.error("SMS Failed", err);
+        return false;
+    }
+};

@@ -92,7 +92,7 @@ export default function Home() {
                 
                 <div className="flex gap-2 mt-6 pt-0">
                   <button className="flex-1 bg-[#6b111e] hover:bg-[#5a0e19] text-white py-2 rounded text-xs font-bold transition-colors">
-                    Submit Tip
+                   Submit Tip 
                   </button>
                   <button className="flex-1 bg-white border border-gray-200 hover:border-gray-300 text-gray-800 py-2 rounded text-xs font-bold transition-colors">
                     Report Info
