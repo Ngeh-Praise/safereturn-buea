@@ -1,7 +1,45 @@
-﻿import { Link } from 'react-router-dom';
+﻿import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios'; // 1. Import axios
 import Footer from '../components/Footer';
 
 export default function Register() {
+  const [formData, setFormData] = useState({ 
+    full_name: '', 
+    email: '', 
+    phone_number: '', 
+    password: '', 
+    confirmPassword: '' 
+  });
+  
+  const navigate = useNavigate();
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    // Basic password validation
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    try {
+      // 2. Send registration data to backend
+      // Note: We only send the 4 fields the backend expects
+      await axios.post('http://localhost:5000/api/auth/register', {
+        full_name: formData.full_name,
+        email: formData.email,
+        phone_number: formData.phone_number,
+        password: formData.password
+      });
+
+      alert("Registration successful! You can now login.");
+      navigate("/login");
+    } catch (err) {
+      alert(err.response?.data?.message || "Registration failed. Please try again.");
+    }
+  };
+
   return (
     <div className="relative min-h-screen bg-[#E8EAED] text-slate-900 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(230,227,231,0.9),transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(120,18,45,0.12),transparent_20%)]" />
@@ -15,83 +53,61 @@ export default function Register() {
 
             <div className="px-6 pb-10 sm:px-10 sm:pb-12">
               <div className="mx-auto max-w-3xl rounded-[28px] border border-[#E7D8DD] bg-[#FEFBFB] p-8 shadow-sm sm:p-10">
-                <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                <form className="space-y-6" onSubmit={handleRegister}>
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="md:col-span-2">
-                      <label className="block text-xs font-semibold uppercase tracking-[0.16em] text-[#5A262F] mb-2">
-                        Full Name
-                      </label>
+                      <label className="block text-xs font-semibold uppercase tracking-[0.16em] text-[#5A262F] mb-2">Full Name</label>
                       <input
                         type="text"
+                        required
                         placeholder="Enter your legal name"
-                        className="w-full rounded-2xl border border-[#E5D8DB] bg-white px-4 py-3 text-sm text-slate-700 placeholder:text-slate-400 focus:border-[#7A0C2E] focus:outline-none focus:ring-2 focus:ring-[#7A0C2E]/10"
+                        className="w-full rounded-2xl border border-[#E5D8DB] bg-white px-4 py-3 text-sm text-slate-700 focus:border-[#7A0C2E] focus:outline-none"
+                        onChange={(e) => setFormData({...formData, full_name: e.target.value})}
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold uppercase tracking-[0.16em] text-[#5A262F] mb-2">
-                        Email Address
-                      </label>
+                      <label className="block text-xs font-semibold uppercase tracking-[0.16em] text-[#5A262F] mb-2">Email Address</label>
                       <input
                         type="email"
+                        required
                         placeholder="name@example.com"
-                        className="w-full rounded-2xl border border-[#E5D8DB] bg-white px-4 py-3 text-sm text-slate-700 placeholder:text-slate-400 focus:border-[#7A0C2E] focus:outline-none focus:ring-2 focus:ring-[#7A0C2E]/10"
+                        className="w-full rounded-2xl border border-[#E5D8DB] bg-white px-4 py-3 text-sm text-slate-700 focus:border-[#7A0C2E] focus:outline-none"
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold uppercase tracking-[0.16em] text-[#5A262F] mb-2">
-                        Phone Number
-                      </label>
+                      <label className="block text-xs font-semibold uppercase tracking-[0.16em] text-[#5A262F] mb-2">Phone Number</label>
                       <input
                         type="tel"
+                        required
                         placeholder="+237 ..."
-                        className="w-full rounded-2xl border border-[#E5D8DB] bg-white px-4 py-3 text-sm text-slate-700 placeholder:text-slate-400 focus:border-[#7A0C2E] focus:outline-none focus:ring-2 focus:ring-[#7A0C2E]/10"
+                        className="w-full rounded-2xl border border-[#E5D8DB] bg-white px-4 py-3 text-sm text-slate-700 focus:border-[#7A0C2E] focus:outline-none"
+                        onChange={(e) => setFormData({...formData, phone_number: e.target.value})}
                       />
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#5A262F] mb-4">
-                      Primary Role
-                    </p>
-                    <div className="grid gap-3 sm:grid-cols-2">
-                      <button
-                        type="button"
-                        className="flex items-center justify-center gap-3 rounded-2xl border border-[#D9C5CA] bg-white px-4 py-4 text-sm font-semibold text-slate-700 transition hover:border-[#7A0C2E] hover:text-[#7A0C2E]"
-                      >
-                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[#FFF1F4] text-[#7A0C2E]">👨‍👩‍👧</span>
-                        Parent/Guardian
-                      </button>
-                      <button
-                        type="button"
-                        className="flex items-center justify-center gap-3 rounded-2xl border border-[#D9C5CA] bg-white px-4 py-4 text-sm font-semibold text-slate-700 transition hover:border-[#7A0C2E] hover:text-[#7A0C2E]"
-                      >
-                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[#FFF1F4] text-[#7A0C2E]">👥</span>
-                        Community Member
-                      </button>
                     </div>
                   </div>
 
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
-                      <label className="block text-xs font-semibold uppercase tracking-[0.16em] text-[#5A262F] mb-2">
-                        Password
-                      </label>
+                      <label className="block text-xs font-semibold uppercase tracking-[0.16em] text-[#5A262F] mb-2">Password</label>
                       <input
                         type="password"
+                        required
                         placeholder="Min. 8 characters"
-                        className="w-full rounded-2xl border border-[#E5D8DB] bg-white px-4 py-3 text-sm text-slate-700 placeholder:text-slate-400 focus:border-[#7A0C2E] focus:outline-none focus:ring-2 focus:ring-[#7A0C2E]/10"
+                        className="w-full rounded-2xl border border-[#E5D8DB] bg-white px-4 py-3 text-sm text-slate-700 focus:border-[#7A0C2E] focus:outline-none"
+                        onChange={(e) => setFormData({...formData, password: e.target.value})}
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold uppercase tracking-[0.16em] text-[#5A262F] mb-2">
-                        Confirm Password
-                      </label>
+                      <label className="block text-xs font-semibold uppercase tracking-[0.16em] text-[#5A262F] mb-2">Confirm Password</label>
                       <input
                         type="password"
+                        required
                         placeholder="Re-enter password"
-                        className="w-full rounded-2xl border border-[#E5D8DB] bg-white px-4 py-3 text-sm text-slate-700 placeholder:text-slate-400 focus:border-[#7A0C2E] focus:outline-none focus:ring-2 focus:ring-[#7A0C2E]/10"
+                        className="w-full rounded-2xl border border-[#E5D8DB] bg-white px-4 py-3 text-sm text-slate-700 focus:border-[#7A0C2E] focus:outline-none"
+                        onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
                       />
                     </div>
                   </div>
@@ -99,20 +115,12 @@ export default function Register() {
                   <div className="space-y-4">
                     <button
                       type="submit"
-                      className="w-full rounded-2xl bg-[#7A0C2E] px-6 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-lg shadow-[#7A0C2E]/20 transition hover:bg-[#64051f]"
+                      className="w-full rounded-2xl bg-[#7A0C2E] px-6 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-lg transition hover:bg-[#64051f]"
                     >
                       Register Account
                     </button>
-
-                    <div className="rounded-2xl border border-[#E7D8DD] bg-[#FCF8F9] px-4 py-4 text-center text-[11px] text-slate-500">
-                      Verified humanitarian platform. By registering, you agree to Buea’s Safety Protocols and Privacy Policy regarding sensitive personal data.
-                    </div>
-
                     <p className="text-center text-sm text-slate-600">
-                      Already have an account? {' '}
-                      <Link to="/login" className="font-semibold text-[#7A0C2E] hover:underline">
-                        Back to Login
-                      </Link>
+                      Already have an account? <Link to="/login" className="font-semibold text-[#7A0C2E] hover:underline">Back to Login</Link>
                     </p>
                   </div>
                 </form>
@@ -120,7 +128,6 @@ export default function Register() {
             </div>
           </div>
         </div>
-
         <Footer />
       </div>
     </div>

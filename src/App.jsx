@@ -10,12 +10,14 @@ import SubmitTip from "./pages/Submittip";
 import About from "./pages/About";
 import SafetyTips from "./pages/SafetyTips";
 import ActiveCases from "./pages/ActiveCases"
+import CommunityDashboard from "./dashboard/CommunityDashboard";
+import AdminDashboard from "./dashboard/AdminDashboard";
 
 // Create a small helper component to handle the Navbar logic
 function Layout({ children }) {
   const location = useLocation();
   // Define which paths should NOT have the Navbar
-  const hideNavbar = location.pathname === "/register";
+  const hideNavbar = location.pathname === "/register" || location.pathname === "/admin-dashboard";
 
   return (
     <>
@@ -38,7 +40,14 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/safety-tips" element={<SafetyTips />} />
 
-            {/* Internal Dashboard Tracks (Protected Layout Shell) */}
+            {/* 1. Admin Dashboard Route (NO Sidebar) */}
+            <Route path="/admin-dashboard" element={
+               <div className="flex-1 bg-white p-8 overflow-y-auto">
+                 <AdminDashboard />
+               </div>
+            } />
+
+            {/* 2. Community Dashboard Routes (With General Sidebar) */}
             <Route 
               path="/*" 
               element={
@@ -46,10 +55,10 @@ export default function App() {
                   <Sidebar />
                   <main className="flex-1 bg-white p-8 overflow-y-auto">
                     <Routes>
-                      {/*<Route path="/dashboard" element={<Dashboard />} />*/}
                       <Route path="/activecases" element={<ActiveCases />} />
                       <Route path="/report-case" element={<ReportCase />} />
                       <Route path="/submit-tip" element={<SubmitTip />} />
+                      <Route path="/community-dashboard" element={<CommunityDashboard />} /> 
                     </Routes>
                   </main>
                 </div>

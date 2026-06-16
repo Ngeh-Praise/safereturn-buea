@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { User, MapPin, Camera, Upload, AlertTriangle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { User, MapPin, Camera, Upload } from 'lucide-react';
 
 export default function ReportCase() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: '',
     age: '',
@@ -21,14 +24,60 @@ export default function ReportCase() {
     setFormData((prev) => ({ ...prev, photo: e.target.files[0] }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form Data Submitted:', formData);
+
+    const locationMap = {
+      'molyko': 1,
+      'buea-town': 2,
+      'mile-14': 3,
+      'cleres-quarters': 4
+    };
+
+    // 1. Calculate the ID
+    const locationId = locationMap[formData.lastSeenLocation];
+
+    const data = new FormData();
+    data.append('full_name', formData.fullName);
+    data.append('age', formData.age);
+    data.append('gender', formData.gender);
+    
+    // 2. IMPORTANT: Append the numerical ID, not the string name
+    data.append('last_seen_location_id', locationId); 
+    
+    data.append('missing_date', formData.dateTimeMissing);
+    data.append('description', formData.physicalDescription);
+    
+    if (formData.photo) {
+      data.append('photo', formData.photo);
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      // ... rest of your axios call
+      
+      console.log("Token being sent:", token); // Add this to see if it's null or 'undefined'
+
+    if (!token) {
+        alert("No token found! Please log in.");}
+
+      await axios.post('http://localhost:5000/api/cases', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      alert('Report submitted successfully!');
+      navigate('/community-dashboard');
+    } catch (err) {
+      console.error("Submission error:", err);
+      alert(err.response?.data?.message || 'Failed to submit report. Please try again.');
+    }
   };
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col justify-between">
-      {/* Main Content Area */}
       <main className="max-w-4xl mx-auto px-4 py-10 w-full flex-grow">
         <h1 className="text-2xl md:text-3xl font-bold text-[#4A020F] mb-1">
           Report a Missing Person
@@ -38,11 +87,7 @@ export default function ReportCase() {
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          
-          {/* Top Section: Missing Person Info & Photo Upload split */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            {/* Left Box: Missing Person Information */}
             <div className="md:col-span-2 bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
               <div className="flex items-center space-x-2 text-[#4A020F] font-semibold text-base mb-5">
                 <User size={18} />
@@ -55,6 +100,7 @@ export default function ReportCase() {
                   <input
                     type="text"
                     name="fullName"
+                    required
                     value={formData.fullName}
                     onChange={handleChange}
                     placeholder="Enter full name"
@@ -64,8 +110,9 @@ export default function ReportCase() {
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1.5">Age</label>
                   <input
-                    type="text"
+                    type="number"
                     name="age"
+                    required
                     value={formData.age}
                     onChange={handleChange}
                     placeholder="e.g. 24"
@@ -76,6 +123,7 @@ export default function ReportCase() {
                   <label className="block text-xs font-bold text-slate-700 mb-1.5">Gender</label>
                   <select
                     name="gender"
+                    required
                     value={formData.gender}
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm bg-white text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#6B0317] focus:border-[#6B0317]"
@@ -89,14 +137,12 @@ export default function ReportCase() {
               </div>
             </div>
 
-            {/* Right Box: Upload Photo */}
             <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col items-center justify-center text-center">
               <Camera size={36} className="text-[#4A020F] mb-3" />
               <h3 className="text-sm font-bold text-[#4A020F] mb-1">Upload Photo</h3>
               <p className="text-xs text-slate-500 leading-relaxed max-w-[180px] mb-4">
                 A clear, recent photograph significantly increases search efficiency.
               </p>
-              
               <label className="w-full max-w-[180px] border border-dashed border-[#D2B4BA] rounded-md py-2 px-3 flex items-center justify-center space-x-2 text-xs font-medium text-slate-700 bg-slate-50 cursor-pointer hover:bg-slate-100 transition-colors">
                 <Upload size={14} className="text-slate-500" />
                 <span>Choose File</span>
@@ -115,7 +161,6 @@ export default function ReportCase() {
             </div>
           </div>
 
-          {/* Middle Section: Incident Details */}
           <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm max-w-[calc(100%-0px)] md:w-[65.5%]">
             <div className="flex items-center space-x-2 text-[#4A020F] font-semibold text-base mb-5">
               <MapPin size={18} />
@@ -127,6 +172,7 @@ export default function ReportCase() {
                 <label className="block text-xs font-bold text-slate-700 mb-1.5">Last Seen Location</label>
                 <select
                   name="lastSeenLocation"
+                  required
                   value={formData.lastSeenLocation}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm bg-white text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#6B0317] focus:border-[#6B0317]"
@@ -143,6 +189,7 @@ export default function ReportCase() {
                 <input
                   type="datetime-local"
                   name="dateTimeMissing"
+                  required
                   value={formData.dateTimeMissing}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#6B0317] focus:border-[#6B0317]"
@@ -154,6 +201,7 @@ export default function ReportCase() {
               <label className="block text-xs font-bold text-slate-700 mb-1.5">Physical Description</label>
               <textarea
                 name="physicalDescription"
+                required
                 value={formData.physicalDescription}
                 onChange={handleChange}
                 rows={3}
@@ -163,7 +211,6 @@ export default function ReportCase() {
             </div>
           </div>
 
-          {/* Form Action Buttons */}
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <button
               type="submit"
@@ -173,39 +220,14 @@ export default function ReportCase() {
             </button>
             <button
               type="button"
+              onClick={() => navigate('/community-dashboard')}
               className="w-full sm:w-auto bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 font-medium text-sm px-10 py-3 rounded-lg transition-colors"
             >
               Cancel
             </button>
           </div>
         </form>
-
-        {/* Bottom Alert / Notice Box */}
-        <div className="mt-8 bg-red-50/50 border border-red-200 rounded-lg p-4 flex items-start space-x-3">
-          <AlertTriangle className="text-red-700 flex-shrink-0 mt-0.5" size={18} />
-          <div>
-            <h4 className="text-xs font-bold text-red-900 mb-1">Confidentiality & Accuracy Notice</h4>
-            <p className="text-xs text-red-800 leading-relaxed">
-              False reports or intentionally misleading information may hinder community search efforts. 
-              By submitting this form, you affirm that the information provided is accurate to the best of your knowledge.
-            </p>
-          </div>
-        </div>
       </main>
-
-      {/* Page Footer */}
-      {/* <footer className="bg-[#F8FAFC] border-t border-slate-200/60 px-6 py-6 md:px-16 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 space-y-4 md:space-y-0">
-        <div className="text-center md:text-left">
-          <span className="font-bold text-slate-700">SafeReturn Buea</span>
-          <p className="mt-0.5">© 2026 SafeReturn Buea. Humanitarian Response Platform.</p>
-        </div>
-        <div className="flex space-x-6">
-          <a href="#contacts" className="hover:underline">Emergency Contacts</a>
-          <a href="#protocol" className="hover:underline">Safety Protocol</a>
-          <a href="#privacy" className="hover:underline">Privacy Policy</a>
-          <a href="#terms" className="hover:underline">Terms of Service</a>
-        </div>
-      </footer> */}
     </div>
   );
 }
